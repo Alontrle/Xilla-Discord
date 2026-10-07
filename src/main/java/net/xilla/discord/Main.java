@@ -17,6 +17,7 @@ import net.xilla.discord.api.CommandStartup;
 import net.xilla.discord.api.DiscordCommand;
 import net.xilla.discord.api.DiscordListener;
 import net.xilla.discord.api.ListenerStartup;
+import net.xilla.discord.extension.ExtensionManager;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -34,6 +35,8 @@ public class Main {
     private XillaApplication application;
     private List<DiscordListener> listeners = new ArrayList<>();
     private List<DiscordCommand> commands = new ArrayList<>();
+
+    private ExtensionManager extensionManager;
 
     public Main() {
         application = new XillaApplication(getClass().getClassLoader());
@@ -78,6 +81,9 @@ public class Main {
             }
             return false;
         });
+
+        this.extensionManager = new ExtensionManager(application);
+        this.extensionManager.load();
 
         application.initialize();
         application.start();
@@ -133,6 +139,8 @@ public class Main {
                         adapters[i] = commands.get(i).getCommandContext();
                     }
                     discord.updateCommands().addCommands(adapters).queue();
+
+                    extensionManager.startup(discord);
 
                     // After the bot is ready, you can perform tasks like logging its status
                     Logger.info("Bot is ready! Connected as: " + discord.getSelfUser().getAsTag());

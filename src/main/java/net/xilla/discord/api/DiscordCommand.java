@@ -1,6 +1,5 @@
 package net.xilla.discord.api;
 
-import co.anniecreates.discord.data.UserData;
 import lombok.Getter;
 import lombok.Setter;
 import net.dv8tion.jda.api.Permission;
