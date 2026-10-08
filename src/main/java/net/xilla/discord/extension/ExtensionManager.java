@@ -74,6 +74,14 @@ public class ExtensionManager {
                 // 1. Create a dedicated classloader for this extension
                 ClassLoader extensionClassLoader = createExtensionClassLoader(jar);
                 application.getClassScanner().addClassLoader(extensionClassLoader);
+
+                try {
+                    Class.forName("co.anniecreates.discord.command.SendPointsCommand", false, extensionClassLoader);
+                    System.out.println("loaded OK");
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+
                 Logger.info("Initialized extension " + jar.getName());
             } catch (Exception e) {
                 Logger.warn("Failed to load extension from " + jar.getName() + ":");
@@ -93,6 +101,7 @@ public class ExtensionManager {
      * If Xilla provides a plugin loader utility, replace this with it.
      */
     private URLClassLoader createExtensionClassLoader(File jar) throws Exception {
-        return new URLClassLoader(new URL[]{jar.toURL()});
-    }
+        ClassLoader parent = getClass().getClassLoader();
+        return new URLClassLoader(new URL[]{jar.toURL()}, parent);
+     }
 }
