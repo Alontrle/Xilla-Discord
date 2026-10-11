@@ -122,7 +122,7 @@ public class Main {
                         adapters[i] = listenerAdapters.get(i);
                     }
                     discord = JDABuilder
-                            .createDefault(botToken, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
+                            .createDefault(botToken, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                             .setChunkingFilter(ChunkingFilter.ALL)
                             .setMemberCachePolicy(MemberCachePolicy.ALL)
                             .addEventListeners(adapters)
